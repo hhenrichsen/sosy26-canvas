@@ -1,79 +1,56 @@
-import { Node, Polygon, Img, Line, Camera, makeScene2D } from '@motion-canvas/2d';
-import { beginSlide, Vector2, createRef, all, loop, waitFor } from '@motion-canvas/core';
+import { Node, Camera, makeScene2D } from '@motion-canvas/2d';
+import { beginSlide, Vector2, all } from '@motion-canvas/core';
+import { actors, makeActor } from '../model/actors';
+import { makeStorage } from '../model/storage';
+import { makeGrant } from '../model/grants';
 
-// canvas color rgb(37,99,103)
+function grid(x: number, y: number): [number, number] {
+  return [x * 300, y * 300]
+}
+
 export default makeScene2D(function* (view) {
-  // Create your animations here
 
-  const shadow = {
-    shadowColor: "black",
-    shadowOffset: 5,
-    shadowBlur: 10,
-  }
+  const max = makeActor(actors.max)
+  max.position(grid(0, 0))
 
-  const bank = new Img({
-    src: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png',
-    width: 200,
-    opacity: 0,
-    ...shadow,
-  })
-  bank.position([300, -300])
+  const sme = makeActor(actors.sme)
+  sme.position(grid(2, -1))
 
-  const bankStorage = new Polygon({
-    sides: 6,
-    size: 150,
-    fill: "#7C4DFF",
-    stroke: "white",
-    lineWidth: 5,
-    rotation: 90,
-    opacity: 0,
-    ...shadow,
-  })
-  bankStorage.position([600, -300])
+  const smeStorage = makeStorage()
+  smeStorage.position(grid(1, -1))
 
-  const grantB2L = new Img({
-    src: 'https://cdn-icons-png.flaticon.com/512/2470/2470720.png',
-    width: 120,
-    opacity: 0,
-    ...shadow,
-  })
-  grantB2L.position([300, 0])
+  const grantS2M = makeGrant({ shape: 'square' })
+  grantS2M.position(smeStorage.position)
 
-  const lisa = new Img({
-    src: 'https://cdn-icons-png.flaticon.com/512/2423/2423822.png',
-    width: 200,
-    opacity: 0,
-    ...shadow,
-  })
-  lisa.position([0, 0])
+  const acme = makeActor(actors.acme)
+  acme.position(grid(-2, -1))
 
-  const grantL2A = new Img({
-    src: 'https://cdn-icons-png.flaticon.com/512/2470/2470720.png',
-    width: 120,
-    opacity: 0,
-    ...shadow,
-  })
-  grantL2A.position([0, 300])
+  const acmeStorage = makeStorage()
+  acmeStorage.position(grid(-1, -1))
 
-  const app = new Img({
-    src: 'https://cdn-icons-png.flaticon.com/512/7409/7409516.png',
-    width: 200,
-    opacity: 0,
-    ...shadow,
-  })
-  app.position([-300, 300])
+  const grantA2M = makeGrant({ shape: 'square' })
+  grantA2M.position(acmeStorage.position)
 
-  const arrow = new Line({
-    lineDash: [20, 20],
-    startArrow: true,
-    endArrow: false,
-    stroke: "black",
-    lineWidth: 5,
-    arrowSize: 15,
-    opacity: 0,
-    ...shadow,
-  })
-  arrow.points([[50, 250], [50, 250]])
+  const app = makeActor(actors.app)
+  app.position(grid(0, 1))
+
+  const grantS2M2A = makeGrant({ shape: 'square' })
+  grantS2M2A.position(grantS2M.position)
+
+  const grantA2M2A = makeGrant({ shape: 'square' })
+  grantA2M2A.position(grantA2M.position)
+
+  // const arrow = new Line({
+  //   lineDash: [20, 20],
+  //   startArrow: true,
+  //   endArrow: false,
+  //   stroke: "black",
+  //   lineWidth: 5,
+  //   arrowSize: 15,
+  //   opacity: 0,
+  //   ...shadow,
+  // })
+  // arrow.points([[50, 250], [50, 250]])
 
   const width = 1920;
   const height = 1080;
@@ -81,7 +58,7 @@ export default makeScene2D(function* (view) {
   const scene = new Node({
     position: new Vector2(width / 2, height / 2),
     cachePadding: [width, height, width, height],
-    children: [bank, lisa, app, bankStorage, grantB2L, grantL2A, arrow],
+    children: [sme, acme, max, app, smeStorage, acmeStorage, grantS2M, grantA2M, grantS2M2A, grantA2M2A],
   });
 
   const camera = new Camera({
@@ -89,29 +66,42 @@ export default makeScene2D(function* (view) {
   })
   view.add(camera)
 
-  yield* beginSlide('Actors')
+  yield* beginSlide('Max')
   yield* all(
-    bank.opacity(1, 1),
-    lisa.opacity(1, 1),
+    max.opacity(1, 1),
   )
-  yield* beginSlide('Storage')
+  yield* beginSlide('SME')
   yield* all(
-    bankStorage.opacity(1, 1),
+    sme.opacity(1, 1),
+    smeStorage.opacity(1, 1),
   )
-  yield* beginSlide('Grant B2L')
+  yield* beginSlide('Grant S2M')
   yield* all(
-    grantB2L.opacity(1, 1),
+    grantS2M.opacity(1, 1),
+    grantS2M.position(grid(1, 0), 1)
   )
-  yield* camera.centerOn([800, 0], 1)
+  yield* beginSlide('ACME')
+  yield* all(
+    acme.opacity(1, 1),
+    acmeStorage.opacity(1, 1),
+  )
+  yield* beginSlide('Grant A2M')
+  yield* all(
+    grantA2M.opacity(1, 1),
+    grantA2M.position(grid(-1, 0), 1)
+  )
   yield* beginSlide('App')
   yield* all(
     app.opacity(1, 1),
   )
-  yield* beginSlide('Grant L2A')
+  yield* beginSlide('Grant M2A')
   yield* all(
-    grantL2A.opacity(1, 1),
-    arrow.opacity(1, 1),
-    arrow.points([[250, 50], [50, 250]], 1),
+    grantS2M2A.opacity(1, 1),
+    grantS2M2A.position(grid(1, 1), 1),
+    grantA2M2A.opacity(1, 1),
+    grantA2M2A.position(grid(-1, 1), 1)
+    // arrow.opacity(1, 1),
+    // arrow.points([[250, 50], [50, 250]], 1),
   )
   yield* beginSlide('End')
 });
