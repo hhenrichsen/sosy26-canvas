@@ -4,13 +4,10 @@ import { parser } from '@lezer/yaml';
 import { actors, makeActor } from '../model/actors';
 import { makeStorage } from '../model/storage';
 import { makeGrant } from '../model/grants';
+import { grid, makeScene } from '../model/layout';
 import { CatppuccinMocha } from '../model/styles';
 
 Code.defaultHighlighter = new LezerHighlighter(parser, CatppuccinMocha);
-
-function grid(x: number, y: number): [number, number] {
-  return [x * 300, y * 300]
-}
 
 export default makeScene2D(function* (view) {
 
@@ -108,16 +105,10 @@ accessMode: [ Read ]`,
   snippetS2M2A.position(grid(6, 0.75))
 
 
-  const width = 1920;
-  const height = 1080;
   const elements = [sme, acme, max, app, smeStorage, acmeStorage, grantS2M, grantA2M, grantS2M2A, grantA2M2A]
   const snippets = [snippetS2M, snippetS2M2A]
 
-  const scene = new Node({
-    position: new Vector2(width / 2, height / 2),
-    cachePadding: [width, height, width, height],
-    children: [...elements, ...snippets]
-  });
+  const scene = makeScene([...elements, ...snippets])
 
   const camera = new Camera({
     scene,

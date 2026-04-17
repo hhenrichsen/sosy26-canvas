@@ -1,15 +1,15 @@
-import { makeProject } from '@motion-canvas/core';
-
-import example from './scenes/example?scene';
+import { makeProject } from '@motion-canvas/core'
+import example from './scenes/example?scene'
+import authz from './scenes/authz-screen?scene'
 
 const font = new FontFace(
   'Sriracha',
   'url(https://fonts.gstatic.com/s/sriracha/v16/0nkrC9D4IuYBgWcI9NbfTwE.woff2)'
-);
+)
 
-await font.load();
-document.fonts.add(font);
+await font.load()
+document.fonts.add(font)
 
 export default makeProject({
-  scenes: [example],
-});
+  scenes: [example, authz],
+})

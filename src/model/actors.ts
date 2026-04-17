@@ -42,6 +42,10 @@ export function makeActor(props: ActorProps) {
 }
 
 export const actors = {
+  solid: {
+    name: 'Solid-ODI',
+    icon: 'https://avatars.githubusercontent.com/u/14262490?s=200&v=4',
+  },
   bank: {
     name: 'BigBank',
     icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png',
