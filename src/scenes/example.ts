@@ -4,8 +4,9 @@ import { parser } from '@lezer/yaml';
 import { actors, makeActor } from '../model/actors';
 import { makeStorage } from '../model/storage';
 import { makeGrant } from '../model/grants';
-import { grid, makeScene } from '../model/layout';
+import { grid } from '../model/layout';
 import { CatppuccinMocha } from '../model/styles';
+import { FixedCamera } from '../model/fixedcamera';
 
 Code.defaultHighlighter = new LezerHighlighter(parser, CatppuccinMocha);
 
@@ -108,11 +109,7 @@ accessMode: [ Read ]`,
   const elements = [sme, acme, max, app, smeStorage, acmeStorage, grantS2M, grantA2M, grantS2M2A, grantA2M2A]
   const snippets = [snippetS2M, snippetS2M2A]
 
-  const scene = makeScene([...elements, ...snippets])
-
-  const camera = new Camera({
-    scene,
-  })
+  const camera = new FixedCamera({ children : [...elements, ...snippets]});
   view.add(camera)
 
   yield* beginSlide('Max')

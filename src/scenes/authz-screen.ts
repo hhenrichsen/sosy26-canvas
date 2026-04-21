@@ -1,8 +1,9 @@
 import { beginSlide, all } from "@motion-canvas/core";
 import { Camera, makeScene2D, Rect } from "@motion-canvas/2d"
 import { makeActor, actors } from "../model/actors"
-import { grid, makeScene } from '../model/layout';
+import { grid } from '../model/layout';
 import { makeMode, makeStorage, makeResource, makeNeed, makeManager, makeCombined } from "../model/storage";
+import { FixedCamera } from "../model/fixedcamera";
 
 export default makeScene2D(function* (view) {
   const max = makeActor(actors.max)
@@ -102,10 +103,7 @@ export default makeScene2D(function* (view) {
   });
   screen.position(grid(0, 0))
 
-  const scene = makeScene([max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, sme, suas, ss1, ss2, acme, auas, sa1, sa2])
-  const camera = new Camera({
-    scene
-  })
+  const camera = new FixedCamera({ children: [max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, sme, suas, ss1, ss2, acme, auas, sa1, sa2]});
   view.add(camera)
 
   yield* beginSlide('Max')
