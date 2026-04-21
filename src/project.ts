@@ -7,8 +7,7 @@ const font = new FontFace(
   'url(https://fonts.gstatic.com/s/sriracha/v16/0nkrC9D4IuYBgWcI9NbfTwE.woff2)'
 )
 
-await font.load()
-document.fonts.add(font)
+font.load().then(() => document.fonts.add(font))
 
 export default makeProject({
   scenes: [example, authz],
