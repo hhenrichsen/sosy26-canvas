@@ -20,6 +20,9 @@ export default makeScene2D(function* (view) {
   const sm3 = makeStorage({ pentagon: false })
   sm3.position(grid(-2.9, -1))
 
+  const sm4 = makeStorage({ triangle: false })
+  sm4.position(grid(-3.2, - 1))
+
   const sme = makeActor(actors.sme)
   sme.position(grid(-1, 0))
 
@@ -99,7 +102,7 @@ export default makeScene2D(function* (view) {
   });
   screen.position(grid(0, 0))
 
-  const scene = makeScene([max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sme, suas, ss1, ss2, acme, auas, sa1, sa2])
+  const scene = makeScene([max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, sme, suas, ss1, ss2, acme, auas, sa1, sa2])
   const camera = new Camera({
     scene
   })
@@ -147,6 +150,11 @@ export default makeScene2D(function* (view) {
   yield* all(
     muas.opacity(1, 1),
     suas.opacity(1, 1),
+  )
+  yield* beginSlide('Adjust Camera')
+  yield* all(
+    sm4.opacity(1, 1),
+    camera.centerOn(grid(-1, 0), 1),
   )
   yield* beginSlide('ACME stack')
   yield* all(

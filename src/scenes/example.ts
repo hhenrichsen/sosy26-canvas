@@ -1,5 +1,5 @@
 import { Node, Camera, makeScene2D, Code, LezerHighlighter, Rect, lines } from '@motion-canvas/2d';
-import { beginSlide, Vector2, all, DEFAULT } from '@motion-canvas/core';
+import { beginSlide, all, DEFAULT } from '@motion-canvas/core';
 import { parser } from '@lezer/yaml';
 import { actors, makeActor } from '../model/actors';
 import { makeStorage } from '../model/storage';
